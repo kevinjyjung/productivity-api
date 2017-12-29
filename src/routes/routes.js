@@ -6,13 +6,15 @@ var appRouter = (app) => {
     });
 
     app.get("/tasks", (req, res) => {
+        var tasks = [];
         csv.fromPath("./tasks.csv", { headers: true })
             .on("data", (data) => {
                 console.log(`${data.id} ${data.timestamp} ${data.name}`);
+                tasks.push(data);
             })
             .on("end", () => {
                 console.log("done");
-                res.send("Done reading csv");
+                res.send(tasks);
             });
     });
 }
